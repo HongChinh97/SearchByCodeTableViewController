@@ -8,6 +8,15 @@
 
 import UIKit
 
+extension String {
+    var asciiString: String? {
+        if let data = self.data(using: String.Encoding.ascii, allowLossyConversion: true){
+            return String.init(data: data, encoding: String.Encoding.ascii)
+        }
+        return nil
+    }
+}
+
 class TableViewController: UITableViewController, UISearchResultsUpdating {
     
     var heroArray = [Hero]()
@@ -41,7 +50,7 @@ class TableViewController: UITableViewController, UISearchResultsUpdating {
     private func loadSample() {
         let hero1 = Hero(name: "DrowRanger", category: "agility", image: #imageLiteral(resourceName: "DrowRanger"))
         
-        let hero2 = Hero(name: "Mirana", category: "agility", image: #imageLiteral(resourceName: "Mirana"))
+        let hero2 = Hero(name: "Mírana", category: "agility", image: #imageLiteral(resourceName: "TemplarAssassin"))
         
         let hero3 = Hero(name: "PhantomAssassin", category: "agility", image: #imageLiteral(resourceName: "PhantomAssassin"))
         
@@ -49,15 +58,15 @@ class TableViewController: UITableViewController, UISearchResultsUpdating {
         
         let hero5 = Hero(name: "VengefulSpirit", category: "agility", image: #imageLiteral(resourceName: "VengefulSpirit"))
         
-        let hero6 = Hero(name: "Abaddon", category: "strength", image: #imageLiteral(resourceName: "Abaddon"))
+        let hero6 = Hero(name: "Abaddon", category: "strength", image: #imageLiteral(resourceName: "TemplarAssassin"))
         
-        let hero7 = Hero(name: "EarthShaker", category:"strength", image: #imageLiteral(resourceName: "EarthShaker"))
+        let hero7 = Hero(name: "EarthShaker", category:"strength", image: #imageLiteral(resourceName: "VengefulSpirit"))
         
-        let hero8 = Hero(name: "Huskar", category: "strength", image: #imageLiteral(resourceName: "Huskar"))
+        let hero8 = Hero(name: "Huskar", category: "strength", image: #imageLiteral(resourceName: "DrowRanger"))
         
-        let hero9 = Hero(name: "Phoenix", category: "strength", image: #imageLiteral(resourceName: "Phoenix"))
+        let hero9 = Hero(name: "Phoenix", category: "strength", image: #imageLiteral(resourceName: "VengefulSpirit"))
         
-        let hero10 = Hero(name: "Tusk", category: "strength", image: #imageLiteral(resourceName: "Tusk"))
+        let hero10 = Hero(name: "Tusk", category: "strength", image: #imageLiteral(resourceName: "VengefulSpirit"))
         
         heroArray += [hero1, hero2, hero3, hero4, hero5, hero6, hero7, hero8, hero9, hero10]
     }
@@ -85,7 +94,7 @@ class TableViewController: UITableViewController, UISearchResultsUpdating {
         guard let searchText = searchController.searchBar.text else { return }
         // dua het cac ki tu ve dang chu thuong
         filteredData = searchText.isEmpty ? (heroArray) : (heroArray.filter({ (heroArray: Hero) -> Bool in
-            return heroArray.name.lowercased().contains(searchText.lowercased())
+            return heroArray.name.lowercased().asciiString!.contains(searchText.lowercased().asciiString!)
         }))
         tableView.reloadData()
     }
